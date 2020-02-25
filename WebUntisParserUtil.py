@@ -30,13 +30,13 @@ def extract_location(lesson_outer: Tag) -> str:
 
 def extract_timed_teacher_locations(soup: BeautifulSoup, mondayte: date) -> [TimedTeacherLocation]:
     timed_teacher_locations: [TimedTeacherLocation] = []
+    date_offsets: [int] = []
     table = soup.find(id='timetable').table
     rows = table.children
     next(rows)
     for idx_row, row in enumerate(rows):
         if row == '\n':
             continue
-        day_of_week: float = 0
         for idx_lesson, lesson in enumerate(row):
             if idx_lesson == 0:
                 continue
@@ -46,16 +46,17 @@ def extract_timed_teacher_locations(soup: BeautifulSoup, mondayte: date) -> [Tim
                 rowspan: int = int(lesson.attrs['rowspan']) if 'rowspan' in lesson.attrs else 1
                 for teacher in teachers:
                     for i in range(rowspan):
+                        #  TODO add time to date_offset when rowspan > 1
                         timed_teacher_locations.append(
                             TimedTeacherLocation(
                                 teacher=teacher,
                                 location=location,
                                 lesson=math.ceil(idx_row / 2) + i,
-                                dt=mondayte + timedelta(days=day_of_week)
+                                dt=mondayte + timedelta(days=date_offsets[idx_row])
                             )
                         )
             if 'br' in lesson.attrs['class']:
-                day_of_week += 1
+                date_offsets[idx_row] += 1
     return timed_teacher_locations
 
 
