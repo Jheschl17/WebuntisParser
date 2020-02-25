@@ -9,6 +9,7 @@ To execute run following command while in project directory:
 
 Dependencies:
 BeautifulSoup4 (https://www.crummy.com/software/BeautifulSoup/bs4/doc/)
+Pystache (https://github.com/defunkt/pystache)
 """
 
 __author__ = "StrauXX"
@@ -23,5 +24,24 @@ mondayte: date = date(2020, 2, 24)  # date of monday TODO: generate automaticall
 for soup in download_soups(mondayte):
     timed_teacher_locations.extend(extract_timed_teacher_locations(soup, mondayte))
 
-for ttl in timed_teacher_locations:
+for ttl in sorted(timed_teacher_locations):
     print(ttl)
+
+"""
+data = [
+    {
+        teacher = '',
+        days = [
+            {
+                date = DATE,
+                lessons = [
+                    'LOCATION',
+                    ...
+                ]
+            },
+            ...
+        ]
+    },
+    ...
+]
+"""

@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Teacher time table</title>
+    <style>
+        * {
+            font-family: sans-serif;
+            padding: 0;
+            margin: 0;
+        }
+
+        .bold {
+            font-weight: bold;
+        }
+
+        .light {
+            font-weight: lighter;
+        }
+
+        .big {
+            font-size: 1.3rem
+        }
+
+        .very-big{
+            font-size: 2rem;
+        }
+
+        .full-width {
+            width: available;
+        }
+
+        .border-gray {
+            border: gray solid thin;
+        }
+
+        .border-black {
+            border: black solid thick;
+        }
+
+        .share-width {
+            width: 16.5%;
+            float: left;
+            display: block;
+            position: relative;
+        }
+
+        .fit-height {
+            display: block;
+        }
+
+        .share-height {
+            height: 10%;
+            display: block;
+            position: relative;
+        }
+
+        .table-height {
+            height: 25rem;
+        }
+
+        .inherit-height {
+            height: inherit;
+        }
+    </style>
+</head>
+<body>
+    <div class="full-width">
+        <h2>{{teacher_name}}</h2>
+        <div class="full-width fit-height table-height"> <!-- table -->
+            <div class="share-width inherit-height"> <!-- column -->
+                <div class="share-height bold big">&nbsp</div>
+                <div class="share-height bold very-big border-gray">1</div>
+                <div class="share-height bold very-big border-gray">2</div>
+                <div class="share-height bold very-big border-gray">3</div>
+                <div class="share-height bold very-big border-gray">4</div>
+                <div class="share-height bold very-big border-gray">5</div>
+                <div class="share-height bold very-big border-gray">6</div>
+                <div class="share-height bold very-big border-gray">7</div>
+                <div class="share-height bold very-big border-gray">8</div>
+                <div class="share-height bold very-big border-gray">9</div>
+            </div>
+            <div class="share-width inherit-height"> <!-- column -->
+                <div class="share-height bold big border-gray">{{date_monday}}</div>
+                <div class="share-height border-gray">{{location}}</div>
+                <div class="share-height border-gray">{{location}}</div>
+                <div class="share-height border-gray">{{location}}</div>
+                <div class="share-height border-gray">{{location}}</div>
+                <div class="share-height border-gray">{{location}}</div>
+                <div class="share-height border-gray">{{location}}</div>
+                <div class="share-height border-gray">{{location}}</div>
+                <div class="share-height border-gray">{{location}}</div>
+                <div class="share-height border-gray">{{location}}</div>
+            </div>
+            <div class="share-width inherit-height"> <!-- column -->
+                <div class="share-height bold big border-gray">{{date_tuesday}}</div>
+                <div class="share-height border-gray">{{location}}</div>
+                <div class="share-height border-gray">{{location}}</div>
+                <div class="share-height border-gray">{{location}}</div>
+                <div class="share-height border-gray">{{location}}</div>
+                <div class="share-height border-gray">{{location}}</div>
+                <div class="share-height border-gray">{{location}}</div>
+                <div class="share-height border-gray">{{location}}</div>
+                <div class="share-height border-gray">{{location}}</div>
+                <div class="share-height border-gray">{{location}}</div>
+            </div>
+            <div class="share-width inherit-height"> <!-- column -->
+                <div class="share-height bold big border-gray">{{date_wednesday}}</div>
+                <div class="share-height border-gray">{{location}}</div>
+                <div class="share-height border-gray">{{location}}</div>
+                <div class="share-height border-gray">{{location}}</div>
+                <div class="share-height border-gray">{{location}}</div>
+                <div class="share-height border-gray">{{location}}</div>
+                <div class="share-height border-gray">{{location}}</div>
+                <div class="share-height border-gray">{{location}}</div>
+                <div class="share-height border-gray">{{location}}</div>
+                <div class="share-height border-gray">{{location}}</div>
+            </div>
+            <div class="share-width inherit-height"> <!-- column -->
+                <div class="share-height bold big border-gray">{{date_thursday}}</div>
+                <div class="share-height border-gray">{{location}}</div>
+                <div class="share-height border-gray">{{location}}</div>
+                <div class="share-height border-gray">{{location}}</div>
+                <div class="share-height border-gray">{{location}}</div>
+                <div class="share-height border-gray">{{location}}</div>
+                <div class="share-height border-gray">{{location}}</div>
+                <div class="share-height border-gray">{{location}}</div>
+                <div class="share-height border-gray">{{location}}</div>
+                <div class="share-height border-gray">{{location}}</div>
+            </div>
+            <div class="share-width inherit-height"> <!-- column -->
+                <div class="share-height bold big border-gray">{{date_friday}}</div>
+                <div class="share-height border-gray">{{location}}</div>
+                <div class="share-height border-gray">{{location}}</div>
+                <div class="share-height border-gray">{{location}}</div>
+                <div class="share-height border-gray">{{location}}</div>
+                <div class="share-height border-gray">{{location}}</div>
+                <div class="share-height border-gray">{{location}}</div>
+                <div class="share-height border-gray">{{location}}</div>
+                <div class="share-height border-gray">{{location}}</div>
+                <div class="share-height border-gray">{{location}}</div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

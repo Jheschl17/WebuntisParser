@@ -8,3 +8,4 @@ To execute run following command while in project directory:
 
 Dependencies:
 BeautifulSoup4 (https://www.crummy.com/software/BeautifulSoup/bs4/doc/)
+Pystache (https://github.com/defunkt/pystache)

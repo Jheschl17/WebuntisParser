@@ -42,15 +42,18 @@ def extract_timed_teacher_locations(soup: BeautifulSoup, mondayte: date) -> [Tim
                 continue
             teachers: [str] = extract_teachers(lesson)
             location: str = extract_location(lesson)
+            rowspan: int = int(lesson.attrs['rowspan']) if 'rowspan' in lesson.attrs else 1
+            print(f'rowspan={rowspan}, idx_row={idx_row}')
             for teacher in teachers:
-                timed_teacher_locations.append(
-                    TimedTeacherLocation(
-                        teacher=teacher,
-                        location=location,
-                        lesson=math.ceil(idx_row / 2),
-                        dt=mondayte + timedelta(days=int(day_of_week))
+                for i in range(rowspan):
+                    timed_teacher_locations.append(
+                        TimedTeacherLocation(
+                            teacher=teacher,
+                            location=location,
+                            lesson=math.ceil(idx_row / 2) + i,
+                            dt=mondayte + timedelta(days=int(day_of_week))
+                        )
                     )
-                )
             if 'bl' in lesson.attrs['class']:
                 day_of_week += 0.5
             if 'br' in lesson.attrs['class']:
