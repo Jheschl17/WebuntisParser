@@ -6,7 +6,7 @@ from datetime import date, timedelta
 import re
 import requests
 
-from TimedTeacherLocation import TimedTeacherLocation
+from src.TimedTeacherLocation import TimedTeacherLocation
 
 FIRST_CLASS_ID: int = 183
 LAST_CLASS_ID: int = 200

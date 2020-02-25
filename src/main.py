@@ -15,7 +15,7 @@ Pystache (https://github.com/defunkt/pystache)
 __author__ = "StrauXX"
 
 
-from WebUntisParserUtil import *
+from src.WebUntisParserUtil import *
 
 
 timed_teacher_locations: [TimedTeacherLocation] = []
