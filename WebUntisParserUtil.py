@@ -40,30 +40,28 @@ def extract_timed_teacher_locations(soup: BeautifulSoup, mondayte: date) -> [Tim
         for idx_lesson, lesson in enumerate(row):
             if idx_lesson == 0:
                 continue
-            teachers: [str] = extract_teachers(lesson)
-            location: str = extract_location(lesson)
-            rowspan: int = int(lesson.attrs['rowspan']) if 'rowspan' in lesson.attrs else 1
-            print(f'rowspan={rowspan}, idx_row={idx_row}')
-            for teacher in teachers:
-                for i in range(rowspan):
-                    timed_teacher_locations.append(
-                        TimedTeacherLocation(
-                            teacher=teacher,
-                            location=location,
-                            lesson=math.ceil(idx_row / 2) + i,
-                            dt=mondayte + timedelta(days=int(day_of_week))
+            if 'ttcell' in lesson.attrs['class']:
+                teachers: [str] = extract_teachers(lesson)
+                location: str = extract_location(lesson)
+                rowspan: int = int(lesson.attrs['rowspan']) if 'rowspan' in lesson.attrs else 1
+                for teacher in teachers:
+                    for i in range(rowspan):
+                        timed_teacher_locations.append(
+                            TimedTeacherLocation(
+                                teacher=teacher,
+                                location=location,
+                                lesson=math.ceil(idx_row / 2) + i,
+                                dt=mondayte + timedelta(days=day_of_week)
+                            )
                         )
-                    )
-            if 'bl' in lesson.attrs['class']:
-                day_of_week += 0.5
             if 'br' in lesson.attrs['class']:
-                day_of_week += 0.5
+                day_of_week += 1
     return timed_teacher_locations
 
 
 def download_soups(mondayte: date) -> [BeautifulSoup]:
     ret: [BeautifulSoup] = []
-    for i in range(FIRST_CLASS_ID, LAST_CLASS_ID):
+    for i in range(FIRST_CLASS_ID, LAST_CLASS_ID + 1):
         response = requests.get(
             construct_request_url(mondayte, i),
             headers=REQUEST_HEADER
