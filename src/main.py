@@ -26,22 +26,3 @@ for soup in download_soups(mondayte):
 
 for ttl in sorted(timed_teacher_locations):
     print(ttl)
-
-"""
-data = [
-    {
-        teacher = '',
-        days = [
-            {
-                date = DATE,
-                lessons = [
-                    'LOCATION',
-                    ...
-                ]
-            },
-            ...
-        ]
-    },
-    ...
-]
-"""

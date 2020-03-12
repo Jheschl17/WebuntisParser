@@ -1,9 +1,9 @@
-import math
 from bs4 import BeautifulSoup
 from bs4 import Tag
 from datetime import date, timedelta
 import re
 import requests
+import numpy as np
 
 from src.TimedTeacherLocation import TimedTeacherLocation
 
@@ -30,35 +30,52 @@ def extract_location(lesson_outer: Tag) -> str:
 def extract_timed_teacher_locations(soup: BeautifulSoup, mondayte: date) -> [TimedTeacherLocation]:
     timed_teacher_locations: [TimedTeacherLocation] = []
     table = soup.find(id='timetable').table
-    date_offsets: [[bool]] = [[False] * 10] * calc_total_table_width(table)  # [day][lesson]
-    rows = table.children
+    marks: [[bool]] = np.zeros((calc_total_table_width(table), 10), dtype=bool)  # [day][lesson]
+    rows = filter(lambda it: it != '\n', table.children)
     next(rows)
-    for idx_row, row in enumerate(rows):
-        if row == '\n':
-            continue
-        day_of_week: int = 0
-        filtered_row = row.children
-        filtered_row = filter(lambda it: 'ttcell' in lesson.attrs, filtered_row)
-        for idx_lesson, lesson in enumerate(row):
-            if idx_lesson == 0:
-                continue
-            teachers: [str] = extract_teachers(lesson)
-            location: str = extract_location(lesson)
-            rowspan: int = int(lesson.attrs['rowspan']) if 'rowspan' in lesson.attrs else 1
-            for teacher in teachers:
-                for i in range(rowspan):
-                    timed_teacher_locations.append(
-                        TimedTeacherLocation(
-                            teacher=teacher,
-                            location=location,
-                            lesson=math.ceil(idx_row / 2) + i,
-                            dt=mondayte + timedelta(days=date_offsets[int(idx_row / 2) + 1])
-                        )
-                    )
-                    if 'br' in lesson.attrs['class']:
-                        day_of_week += 1
-                        date_offsets[int(idx_row / 2) + i] += 1
+    for row_num, row in enumerate(rows):
+        lessons = filter(lambda it: 'ttcell' in it.attrs['class'], row.children)
+        for lesson_num, lesson in enumerate(lessons):
+            for teacher in extract_teachers(lesson):
+                for i in range(int(lesson.attrs['rowspan']) if 'rowspan' in lesson.attrs else 1):
+                    timed_teacher_locations.append(TimedTeacherLocation(
+                        teacher=teacher,
+                        location=extract_location(lesson),
+                        lesson=row_num + i + 1,
+                        dt=determine_current_date(marks, row_num, row, mondayte)
+                    ))
+            mark(lst=marks,
+                 origin_x=row_num,
+                 origin_y=lesson_num,
+                 down=int(lesson.attrs['rowspan']) if 'rowspan' in lesson.attrs else 1,
+                 right=int(lesson.attrs['colspan']) if 'colspan' in lesson.attrs else 1)
     return timed_teacher_locations
+
+
+def mark(lst: [[bool]], origin_x: int, origin_y: int, down: int, right: int):
+    """
+    marks elements in a rectangle starting from origin, downwards for down elements
+    and rightwards for right elements.
+    :param lst: the list in which elements should be marked
+    :param origin_x: the x coordinate from where marking should start
+    :param origin_y: the y coordinate from where marking should start
+    :param down: how far down elements should be marked
+    :param right: how far right elements should be marked
+    :return:
+    """
+    for y in range(origin_y, down):
+        for x in range(origin_x, right):
+            lst[y][x] = True
+
+
+def determine_current_date(marks: [[bool]], row: int, sample_row: Tag, mondayte: date) -> date:  # ????
+    mark_row = marks[row]
+    elem = list(mark_row).index(False)
+    day_counter = 0
+    for i in range(0, elem):
+        if 'br' in list(sample_row.children)[i].attrs['class']:
+            day_counter += 1
+    return mondayte + timedelta(days=day_counter)
 
 
 def calc_total_table_width(table: Tag) -> int:
